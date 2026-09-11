@@ -1,0 +1,661 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {% if form.instance.pk %}
+        Edit Tweet | Tweetbar
+    {% else %}
+        Create Tweet | Tweetbar
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="create-page">
+
+    <!-- Decorative background -->
+    <div class="decor decor-one">♡</div>
+    <div class="decor decor-two">୨୧</div>
+    <div class="decor decor-three">✿</div>
+    <div class="decor decor-four">♡</div>
+
+
+    <!-- Main Card -->
+    <div class="form-card">
+
+        <!-- Top decoration -->
+        <div class="top-decoration">
+            <span>♡</span>
+            <span>୨୧</span>
+            <span>♡</span>
+        </div>
+
+
+        <!-- Heading -->
+        <div class="form-header">
+
+            <div class="small-heading">
+                ✦ TWEETBAR DIARY ✦
+            </div>
+
+            <h1>
+                {% if form.instance.pk %}
+                    Edit your <i>thought</i>
+                {% else %}
+                    Write a little <i>thought</i>
+                {% endif %}
+                ♡
+            </h1>
+
+            <p>
+                {% if form.instance.pk %}
+                    Give your little thought a tiny makeover.
+                {% else %}
+                    A little space for whatever is on your mind.
+                {% endif %}
+            </p>
+
+        </div>
+
+
+        <!-- Form -->
+        <form
+            method="post"
+            enctype="multipart/form-data"
+            class="tweet-form"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- Django form -->
+            <div class="form-fields">
+
+                {% for field in form %}
+
+                <div class="field-group">
+
+                    <label for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <small class="help-text">
+                            {{ field.help_text }}
+                        </small>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                        <small class="error">
+                            {{ error }}
+                        </small>
+                    {% endfor %}
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="submit-button"
+                >
+                    <span>♡</span>
+
+                    {% if form.instance.pk %}
+                        Save Changes
+                    {% else %}
+                        Post My Thought
+                    {% endif %}
+
+                </button>
+
+                <a
+                    href="{% url 'tweet_list' %}"
+                    class="back-button"
+                >
+                    ← Back to Tweetbar
+                </a>
+
+            </div>
+
+        </form>
+
+
+        <!-- Bottom decoration -->
+        <div class="bottom-note">
+            made with a little love ♡
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* =====================================
+   PAGE
+===================================== */
+
+body {
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            rgba(232, 167, 187, 0.20),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 90% 85%,
+            rgba(232, 167, 187, 0.16),
+            transparent 25%
+        ),
+        #fdf7f5 !important;
+
+    color: #513b42 !important;
+}
+
+
+/* =====================================
+   MAIN CONTAINER
+===================================== */
+
+.create-page {
+    position: relative;
+
+    min-height: 82vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 50px 20px;
+
+    overflow: hidden;
+}
+
+
+/* =====================================
+   FLOATING DECORATIONS
+===================================== */
+
+.decor {
+    position: absolute;
+
+    color: #d38ba2;
+
+    opacity: 0.35;
+
+    pointer-events: none;
+
+    font-family: Georgia, serif;
+
+    animation: float 5s ease-in-out infinite;
+}
+
+.decor-one {
+    left: 12%;
+
+    top: 18%;
+
+    font-size: 38px;
+}
+
+.decor-two {
+    right: 13%;
+
+    top: 22%;
+
+    font-size: 30px;
+
+    animation-delay: 1s;
+}
+
+.decor-three {
+    left: 18%;
+
+    bottom: 18%;
+
+    font-size: 25px;
+
+    animation-delay: 2s;
+}
+
+.decor-four {
+    right: 18%;
+
+    bottom: 15%;
+
+    font-size: 42px;
+
+    animation-delay: 1.5s;
+}
+
+
+/* =====================================
+   FORM CARD
+===================================== */
+
+.form-card {
+    width: 100%;
+
+    max-width: 650px;
+
+    background: rgba(255, 253, 251, 0.97);
+
+    border: 1px solid #ead5da;
+
+    border-radius: 24px;
+
+    padding: 38px 45px 28px;
+
+    box-shadow:
+        0 20px 55px rgba(91, 57, 66, 0.10);
+
+    position: relative;
+
+    animation: appear 0.5s ease;
+}
+
+
+/* =====================================
+   TOP DECORATION
+===================================== */
+
+.top-decoration {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 13px;
+
+    color: #d4849c;
+
+    font-family: Georgia, serif;
+
+    font-size: 14px;
+
+    margin-bottom: 18px;
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
+
+.form-header {
+    text-align: center;
+
+    margin-bottom: 35px;
+}
+
+.small-heading {
+    font-family: "Arial", sans-serif;
+
+    font-size: 9px;
+
+    letter-spacing: 3px;
+
+    color: #c37c91;
+
+    margin-bottom: 13px;
+}
+
+.form-header h1 {
+    font-family: Georgia, "Times New Roman", serif;
+
+    font-size: 38px;
+
+    font-weight: normal;
+
+    line-height: 1.25;
+
+    color: #543d45;
+
+    margin: 0;
+}
+
+.form-header h1 i {
+    color: #c45d80;
+
+    font-weight: normal;
+}
+
+.form-header p {
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+
+    color: #a5818a;
+
+    margin-top: 12px;
+
+    margin-bottom: 0;
+}
+
+
+/* =====================================
+   FORM
+===================================== */
+
+.tweet-form {
+    width: 100%;
+}
+
+.form-fields {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 22px;
+}
+
+
+/* =====================================
+   FORM FIELDS
+===================================== */
+
+.field-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.field-group label {
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    color: #684850;
+
+    letter-spacing: 0.2px;
+}
+
+
+/* Text inputs */
+
+.field-group input[type="text"],
+.field-group input[type="file"],
+.field-group input[type="email"],
+.field-group input[type="url"],
+.field-group textarea,
+.field-group select {
+    width: 100%;
+
+    background: #fffafa;
+
+    border: 1px solid #e6cdd4;
+
+    border-radius: 12px;
+
+    padding: 12px 14px;
+
+    color: #594149;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+
+    outline: none;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Textarea */
+
+.field-group textarea {
+    min-height: 150px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+/* Focus */
+
+.field-group input:focus,
+.field-group textarea:focus,
+.field-group select:focus {
+    border-color: #d27491;
+
+    background: #fff;
+
+    box-shadow:
+        0 0 0 4px rgba(210, 116, 145, 0.10);
+}
+
+
+/* File input */
+
+.field-group input[type="file"] {
+    padding: 9px;
+
+    cursor: pointer;
+}
+
+
+/* File button */
+
+.field-group input[type="file"]::file-selector-button {
+    background: #f5dfe6;
+
+    border: none;
+
+    color: #ae5573;
+
+    padding: 7px 12px;
+
+    border-radius: 8px;
+
+    margin-right: 10px;
+
+    cursor: pointer;
+}
+
+
+/* =====================================
+   HELP / ERRORS
+===================================== */
+
+.help-text {
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+    color: #aa858e;
+}
+
+.error {
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    color: #bd4d6c;
+}
+
+
+/* =====================================
+   BUTTONS
+===================================== */
+
+.form-actions {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.submit-button,
+.back-button {
+    flex: 1;
+
+    min-height: 45px;
+
+    border-radius: 12px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    transition: all 0.25s ease;
+}
+
+
+/* Submit */
+
+.submit-button {
+    border: none;
+
+    background: #c65e80;
+
+    color: white;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 7px 18px rgba(190, 82, 116, 0.20);
+}
+
+.submit-button:hover {
+    background: #b64e71;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 23px rgba(190, 82, 116, 0.27);
+}
+
+.submit-button span {
+    margin-right: 6px;
+}
+
+
+/* Back */
+
+.back-button {
+    background: #fff;
+
+    border: 1px solid #e5cbd2;
+
+    color: #966977;
+}
+
+.back-button:hover {
+    background: #faeef1;
+
+    color: #b65072;
+
+    transform: translateY(-2px);
+}
+
+
+/* =====================================
+   BOTTOM NOTE
+===================================== */
+
+.bottom-note {
+    text-align: center;
+
+    font-family: Georgia, serif;
+
+    font-style: italic;
+
+    font-size: 11px;
+
+    color: #bd8b99;
+
+    margin-top: 25px;
+}
+
+
+/* =====================================
+   ANIMATIONS
+===================================== */
+
+@keyframes appear {
+
+    from {
+        opacity: 0;
+
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform: translateY(0);
+    }
+
+}
+
+@keyframes float {
+
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 600px) {
+
+    .create-page {
+        padding: 30px 10px;
+    }
+
+    .form-card {
+        padding: 30px 22px 25px;
+
+        border-radius: 20px;
+    }
+
+    .form-header h1 {
+        font-size: 31px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .decor {
+        display: none;
+    }
+
+}
+
+</style>
+
+{% endblock %}

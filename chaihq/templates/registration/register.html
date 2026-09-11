@@ -1,0 +1,166 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Create Account ♡
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .register-wrapper {
+        min-height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 20px;
+    }
+
+    .register-card {
+        width: 100%;
+        max-width: 520px;
+        background: #fffaf8;
+        border: 1px solid #efdde3;
+        border-radius: 28px;
+        padding: 45px;
+        box-shadow: 0 15px 40px rgba(180, 120, 140, 0.12);
+        position: relative;
+    }
+
+    .register-card::before {
+        content: "♡";
+        position: absolute;
+        top: 18px;
+        right: 25px;
+        font-size: 28px;
+        color: #df6d98;
+    }
+
+    .register-title {
+        text-align: center;
+        color: #5b414b;
+        font-family: Georgia, serif;
+        font-size: 32px;
+        margin-bottom: 8px;
+    }
+
+    .register-subtitle {
+        text-align: center;
+        color: #9a7b85;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+
+    .register-card form p {
+        margin-bottom: 20px;
+    }
+
+    .register-card label {
+        display: block;
+        color: #6d4d58;
+        font-weight: 600;
+        margin-bottom: 7px;
+    }
+
+    .register-card input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #e8cfd8;
+        border-radius: 14px;
+        background: #fff;
+        outline: none;
+        transition: 0.2s;
+        font-size: 15px;
+    }
+
+    .register-card input:focus {
+        border-color: #df6d98;
+        box-shadow: 0 0 0 3px rgba(223, 109, 152, 0.1);
+    }
+
+    .register-card ul.helptext,
+    .register-card .helptext {
+        color: #9a7b85;
+        font-size: 12px;
+        margin-top: 6px;
+        padding-left: 18px;
+    }
+
+    .errorlist {
+        color: #c75b76;
+        font-size: 13px;
+        margin: 6px 0;
+        padding-left: 18px;
+    }
+
+    .register-btn {
+        width: 100%;
+        border: none;
+        background: #df6d98;
+        color: white;
+        padding: 13px;
+        border-radius: 16px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.2s;
+    }
+
+    .register-btn:hover {
+        background: #cc5d87;
+        transform: translateY(-1px);
+    }
+
+    .login-text {
+        text-align: center;
+        margin-top: 25px;
+        color: #8d7079;
+        font-size: 14px;
+    }
+
+    .login-text a {
+        color: #d45f8b;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+</style>
+
+
+<div class="register-wrapper">
+
+    <div class="register-card">
+
+        <h1 class="register-title">
+            Join Tweetbar ♡
+        </h1>
+
+        <p class="register-subtitle">
+            Create your little corner of thoughts ✿
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="register-btn">
+                Create account ♡
+            </button>
+
+        </form>
+
+        <p class="login-text">
+            Already have an account?
+            <a href="{% url 'login' %}">
+                Login here
+            </a>
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

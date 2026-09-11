@@ -1,0 +1,407 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Login | Tweetbar
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* ================================
+       LOGIN PAGE
+    ================================= */
+
+    .login-page {
+        min-height: 75vh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 40px 20px;
+
+        position: relative;
+    }
+
+
+    /* Decorative hearts */
+
+    .login-decoration {
+        position: absolute;
+
+        color: #edb3c7;
+
+        font-family: "Playfair Display", serif;
+
+        pointer-events: none;
+
+        opacity: 0.65;
+    }
+
+    .heart-one {
+        top: 80px;
+        left: 15%;
+
+        font-size: 2rem;
+
+        transform: rotate(-15deg);
+    }
+
+    .heart-two {
+        bottom: 90px;
+        right: 16%;
+
+        font-size: 1.5rem;
+
+        transform: rotate(15deg);
+    }
+
+    .heart-three {
+        top: 35%;
+        right: 10%;
+
+        font-size: 1rem;
+    }
+
+
+    /* ================================
+       LOGIN CARD
+    ================================= */
+
+    .login-card {
+        width: 100%;
+        max-width: 430px;
+
+        background: #fffdfc;
+
+        border: 1px solid #efdde3;
+
+        border-radius: 28px;
+
+        padding: 42px;
+
+        box-shadow:
+            0 20px 50px rgba(160, 100, 120, 0.10);
+
+        position: relative;
+
+        overflow: hidden;
+    }
+
+
+    /* Tiny top accent */
+
+    .login-card::before {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 4px;
+
+        background: #e889aa;
+    }
+
+
+    /* ================================
+       HEADER
+    ================================= */
+
+    .login-icon {
+        width: 55px;
+        height: 55px;
+
+        margin: 0 auto 15px;
+
+        border-radius: 50%;
+
+        background: #ffe8f0;
+
+        color: #d95f8c;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 1.6rem;
+    }
+
+    .login-title {
+        font-family: "Playfair Display", serif;
+
+        color: #5b414b;
+
+        font-size: 2rem;
+
+        font-weight: 700;
+
+        margin-bottom: 7px;
+    }
+
+    .login-subtitle {
+        color: #9a7f88;
+
+        font-size: 0.88rem;
+
+        margin-bottom: 30px;
+    }
+
+
+    /* ================================
+       DJANGO FORM
+    ================================= */
+
+    .login-form p {
+        margin-bottom: 19px;
+    }
+
+    .login-form label {
+        display: block;
+
+        color: #674e58;
+
+        font-size: 0.84rem;
+
+        font-weight: 600;
+
+        margin-bottom: 7px;
+    }
+
+    .login-form input {
+        width: 100%;
+
+        height: 45px;
+
+        padding: 10px 14px;
+
+        background: #fff8fa;
+
+        border: 1px solid #ead5dc;
+
+        border-radius: 12px;
+
+        color: #5b414b;
+
+        font-family: "DM Sans", sans-serif;
+
+        font-size: 0.9rem;
+
+        outline: none;
+
+        transition: all 0.2s ease;
+    }
+
+    .login-form input:hover {
+        border-color: #dfb1c1;
+    }
+
+    .login-form input:focus {
+        background: #ffffff;
+
+        border-color: #df7fa2;
+
+        box-shadow:
+            0 0 0 3px rgba(223, 127, 162, 0.10);
+    }
+
+
+    /* Error messages */
+
+    .login-form .errorlist {
+        list-style: none;
+
+        padding: 0;
+        margin: 5px 0 8px;
+
+        color: #c85d7e;
+
+        font-size: 0.78rem;
+    }
+
+
+    /* ================================
+       LOGIN BUTTON
+    ================================= */
+
+    .login-submit {
+        width: 100%;
+
+        border: none;
+
+        background: #df6d98;
+
+        color: white;
+
+        padding: 12px;
+
+        border-radius: 50px;
+
+        font-size: 0.9rem;
+
+        font-weight: 700;
+
+        margin-top: 7px;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 6px 18px rgba(223, 109, 152, 0.18);
+
+        transition: all 0.2s ease;
+    }
+
+    .login-submit:hover {
+        background: #cf5b87;
+
+        transform: translateY(-1px);
+
+        box-shadow:
+            0 8px 22px rgba(223, 109, 152, 0.25);
+    }
+
+
+    /* ================================
+       REGISTER LINK
+    ================================= */
+
+    .register-text {
+        text-align: center;
+
+        color: #9a7f88;
+
+        font-size: 0.84rem;
+
+        margin-top: 25px;
+
+        margin-bottom: 0;
+    }
+
+    .register-link {
+        color: #d95f8c;
+
+        font-weight: 700;
+
+        transition: 0.2s ease;
+    }
+
+    .register-link:hover {
+        color: #bd4d77;
+
+        text-decoration: underline;
+    }
+
+
+    /* ================================
+       MOBILE
+    ================================= */
+
+    @media (max-width: 576px) {
+
+        .login-card {
+            padding: 32px 24px;
+
+            border-radius: 22px;
+        }
+
+        .login-title {
+            font-size: 1.75rem;
+        }
+
+        .heart-one,
+        .heart-two,
+        .heart-three {
+            display: none;
+        }
+
+    }
+
+</style>
+
+
+<div class="login-page">
+
+    <!-- Decorations -->
+
+    <div class="login-decoration heart-one">
+        ♡
+    </div>
+
+    <div class="login-decoration heart-two">
+        ♡
+    </div>
+
+    <div class="login-decoration heart-three">
+        ✦
+    </div>
+
+
+    <!-- Login Card -->
+
+    <div class="login-card">
+
+
+        <!-- Header -->
+
+        <div class="text-center">
+
+            <div class="login-icon">
+                ♡
+            </div>
+
+            <h1 class="login-title">
+                Welcome back
+            </h1>
+
+            <p class="login-subtitle">
+                Your little corner of Tweetbar missed you.
+            </p>
+
+        </div>
+
+
+        <!-- Login Form -->
+
+        <form
+            method="post"
+            class="login-form"
+        >
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button
+                type="submit"
+                class="login-submit"
+            >
+                Login ♡
+            </button>
+
+        </form>
+
+
+        <!-- Register -->
+
+        <p class="register-text">
+
+            Don't have an account?
+
+            <a
+                href="{% url 'register' %}"
+                class="register-link"
+            >
+                Create one
+            </a>
+
+        </p>
+
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,954 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Tweetbar ♡
+{% endblock %}
+
+{% block content %}
+
+<div class="tweet-page">
+
+    <!-- Floating decorations -->
+    <div class="floating-decor decor-1">♡</div>
+    <div class="floating-decor decor-2">✿</div>
+    <div class="floating-decor decor-3">୨୧</div>
+    <div class="floating-decor decor-4">♡</div>
+
+    <!-- HERO -->
+    <section class="hero-section">
+
+        <div class="tiny-label">
+            ✦ MY LITTLE CORNER ✦
+        </div>
+
+        <h1>
+            Welcome to
+            <span>Tweetbar</span>
+            ♡
+        </h1>
+
+        <p>
+            little thoughts, pretty moments<br>
+            & everything in between
+        </p>
+
+        <a href="{% url 'tweet_create' %}" class="create-button">
+            <span>＋</span> Write a little thought
+        </a>
+
+    </section>
+
+
+    <!-- LITTLE DIVIDER -->
+    <div class="pretty-divider">
+        <span>୨୧</span>
+        <div></div>
+        <span>♡</span>
+        <div></div>
+        <span>୨୧</span>
+    </div>
+
+
+    <!-- TWEETS -->
+    <section class="tweets-section">
+
+        <div class="section-heading">
+            <div>
+                <span class="mini-title">THE DIARY</span>
+                <h2>Recent thoughts</h2>
+            </div>
+
+            <span class="tweet-count">
+                {{ tweets|length }} little moment{% if tweets|length != 1 %}s{% endif %}
+            </span>
+        </div>
+
+
+        <div class="tweet-grid">
+
+            {% for tweet in tweets %}
+
+            <article class="tweet-card">
+
+                <!-- Card top decoration -->
+                <div class="card-ribbon">
+                    ♡
+                </div>
+
+                {% if tweet.photo %}
+                <div class="image-wrapper">
+
+                    <img
+                        src="{{ tweet.photo.url }}"
+                        alt="Tweet photo"
+                        class="tweet-image"
+                    >
+
+                    <div class="image-overlay">
+                        ♡
+                    </div>
+
+                </div>
+                {% endif %}
+
+
+                <div class="tweet-body">
+
+                    <!-- Quote -->
+                    <div class="quote">
+                        “
+                    </div>
+
+                    <!-- IMPORTANT:
+                         using tweet.text because your model uses text -->
+                    <p class="tweet-text">
+                        {{ tweet.text }}
+                    </p>
+
+
+                    <!-- Divider -->
+                    <div class="card-divider">
+                        <span></span>
+                        <b>♡</b>
+                        <span></span>
+                    </div>
+
+
+                    <!-- User -->
+                    <div class="tweet-user">
+
+                        <div class="avatar">
+                            {{ tweet.user.username|first|upper }}
+                        </div>
+
+                        <div class="user-details">
+
+                            <strong>
+                                @{{ tweet.user.username }}
+                            </strong>
+
+                            <small>
+                                {{ tweet.created_at }}
+                            </small>
+
+                        </div>
+
+                        <div class="tiny-heart">
+                            ♡
+                        </div>
+
+                    </div>
+
+
+                    <!-- Actions -->
+                     {% if tweet.user == user %}
+                    <div class="actions">
+
+                        <a
+                            href="{% url 'tweet_edit' tweet.id %}"
+                            class="action edit"
+                        >
+                            ♡ Edit
+                        </a>
+
+                        <a
+                            href="{% url 'tweet_delete' tweet.id %}"
+                            class="action delete"
+                        >
+                            Delete
+                        </a>
+
+                    </div>
+                    {% endif %}
+
+                </div>
+
+            </article>
+
+            {% empty %}
+
+            <!-- EMPTY STATE -->
+
+            <div class="empty-state">
+
+                <div class="empty-bow">
+                    ୨୧
+                </div>
+
+                <h2>
+                    Your diary is empty...
+                </h2>
+
+                <p>
+                    Write your first little thought<br>
+                    and make this place yours ♡
+                </p>
+
+                <a
+                    href="{% url 'tweet_create' %}"
+                    class="create-button"
+                >
+                    ＋ Write my first thought
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<style>
+
+/* =====================================
+   FONTS
+===================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+
+/* =====================================
+   PAGE
+===================================== */
+
+body {
+    background:
+        radial-gradient(
+            circle at 10% 20%,
+            rgba(238, 180, 198, 0.18),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 90% 80%,
+            rgba(238, 180, 198, 0.15),
+            transparent 25%
+        ),
+        #fdf7f5 !important;
+
+    color: #513b42 !important;
+}
+
+.tweet-page {
+    position: relative;
+
+    max-width: 1180px;
+
+    margin: 0 auto;
+
+    padding: 55px 25px 90px;
+
+    overflow: hidden;
+}
+
+
+/* =====================================
+   FLOATING DECORATIONS
+===================================== */
+
+.floating-decor {
+    position: absolute;
+
+    color: #d88ba3;
+
+    opacity: 0.35;
+
+    pointer-events: none;
+
+    font-family: Georgia, serif;
+}
+
+.decor-1 {
+    top: 110px;
+    left: 30px;
+    font-size: 35px;
+}
+
+.decor-2 {
+    top: 250px;
+    right: 35px;
+    font-size: 28px;
+}
+
+.decor-3 {
+    top: 500px;
+    left: 5px;
+    font-size: 24px;
+}
+
+.decor-4 {
+    bottom: 150px;
+    right: 20px;
+    font-size: 40px;
+}
+
+
+/* =====================================
+   HERO
+===================================== */
+
+.hero-section {
+    text-align: center;
+
+    padding: 15px 0 20px;
+}
+
+.tiny-label {
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 10px;
+
+    letter-spacing: 4px;
+
+    color: #c17b91;
+
+    margin-bottom: 18px;
+}
+
+.hero-section h1 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: clamp(42px, 6vw, 68px);
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+    color: #513b42;
+
+    margin: 0;
+}
+
+.hero-section h1 span {
+    color: #c75e82;
+
+    font-style: italic;
+}
+
+.hero-section p {
+    font-family: "DM Sans", sans-serif;
+
+    color: #9d7883;
+
+    font-size: 15px;
+
+    line-height: 1.7;
+
+    margin: 20px 0 28px;
+}
+
+
+/* =====================================
+   CREATE BUTTON
+===================================== */
+
+.create-button {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 13px 24px;
+
+    background: #c95f83;
+
+    color: white !important;
+
+    border-radius: 30px;
+
+    text-decoration: none;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 8px 22px rgba(190, 84, 119, 0.22);
+
+    transition: all 0.25s ease;
+}
+
+.create-button:hover {
+    transform: translateY(-3px);
+
+    background: #b84e73;
+
+    box-shadow:
+        0 12px 28px rgba(190, 84, 119, 0.28);
+}
+
+.create-button span {
+    font-size: 18px;
+}
+
+
+/* =====================================
+   DIVIDER
+===================================== */
+
+.pretty-divider {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin: 42px auto 48px;
+
+    max-width: 420px;
+
+    color: #d28aa0;
+
+    font-family: Georgia, serif;
+}
+
+.pretty-divider div {
+    height: 1px;
+
+    flex: 1;
+
+    background: #ead2d8;
+}
+
+
+/* =====================================
+   SECTION HEADING
+===================================== */
+
+.section-heading {
+    display: flex;
+
+    align-items: end;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.mini-title {
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: #c17b91;
+}
+
+.section-heading h2 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: 30px;
+
+    font-weight: 500;
+
+    color: #513b42;
+
+    margin: 4px 0 0;
+}
+
+.tweet-count {
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 11px;
+
+    color: #a9848e;
+
+    background: #f5e5e9;
+
+    padding: 7px 13px;
+
+    border-radius: 20px;
+}
+
+
+/* =====================================
+   GRID
+===================================== */
+
+.tweet-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 28px;
+
+    align-items: start;
+}
+
+
+/* =====================================
+   CARD
+===================================== */
+
+.tweet-card {
+    position: relative;
+
+    background: #fffdfb;
+
+    border: 1px solid #ead8d5;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 10px 30px rgba(91, 57, 66, 0.07);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    animation: cardAppear 0.5s ease both;
+}
+
+.tweet-card:nth-child(2) {
+    transform: translateY(14px);
+    animation-delay: 0.08s;
+}
+
+.tweet-card:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+.tweet-card:nth-child(4) {
+    transform: translateY(14px);
+    animation-delay: 0.24s;
+}
+
+.tweet-card:hover {
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 18px 40px rgba(91, 57, 66, 0.12);
+}
+
+.tweet-card:nth-child(2):hover,
+.tweet-card:nth-child(4):hover {
+    transform: translateY(7px);
+}
+
+
+/* =====================================
+   CARD RIBBON
+===================================== */
+
+.card-ribbon {
+    position: absolute;
+
+    top: 15px;
+
+    right: 15px;
+
+    z-index: 5;
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255, 253, 251, 0.95);
+
+    color: #d35f84;
+
+    font-size: 19px;
+
+    box-shadow:
+        0 4px 15px rgba(80, 50, 60, 0.12);
+}
+
+
+/* =====================================
+   IMAGE
+===================================== */
+
+.image-wrapper {
+    position: relative;
+
+    height: 245px;
+
+    overflow: hidden;
+
+    margin: 9px 9px 0;
+
+    border-radius: 13px;
+}
+
+.tweet-image {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition: transform 0.5s ease;
+}
+
+.tweet-card:hover .tweet-image {
+    transform: scale(1.035);
+}
+
+.image-overlay {
+    position: absolute;
+
+    bottom: 12px;
+
+    left: 12px;
+
+    width: 32px;
+
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(255,255,255,0.88);
+
+    border-radius: 50%;
+
+    color: #c75e82;
+
+    font-size: 16px;
+}
+
+
+/* =====================================
+   CARD BODY
+===================================== */
+
+.tweet-body {
+    padding: 20px 21px 21px;
+}
+
+.quote {
+    font-family: Georgia, serif;
+
+    font-size: 39px;
+
+    line-height: 20px;
+
+    color: #dc8da4;
+
+    height: 22px;
+}
+
+.tweet-text {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: 16px;
+
+    line-height: 1.65;
+
+    color: #5b424a;
+
+    min-height: 70px;
+
+    margin: 10px 0 20px;
+
+    word-break: break-word;
+}
+
+
+/* =====================================
+   DIVIDER
+===================================== */
+
+.card-divider {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin: 4px 0 19px;
+}
+
+.card-divider span {
+    flex: 1;
+
+    height: 1px;
+
+    background: #ecd9de;
+}
+
+.card-divider b {
+    font-family: Georgia, serif;
+
+    color: #d4869d;
+
+    font-size: 13px;
+
+    font-weight: normal;
+}
+
+
+/* =====================================
+   USER
+===================================== */
+
+.tweet-user {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    margin-bottom: 19px;
+}
+
+.avatar {
+    flex-shrink: 0;
+
+    width: 39px;
+
+    height: 39px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f4dce4;
+
+    color: #b95174;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 700;
+}
+
+.user-details {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.user-details strong {
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 12px;
+
+    color: #62464f;
+}
+
+.user-details small {
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 10px;
+
+    color: #aa858e;
+}
+
+.tiny-heart {
+    margin-left: auto;
+
+    color: #d894a8;
+
+    font-size: 16px;
+}
+
+
+/* =====================================
+   ACTIONS
+===================================== */
+
+.actions {
+    display: flex;
+
+    gap: 8px;
+}
+
+.action {
+    flex: 1;
+
+    text-align: center;
+
+    padding: 9px 5px;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.action.edit {
+    background: #f8e4ea;
+
+    color: #b95174;
+
+    border: 1px solid #f0ccd7;
+}
+
+.action.edit:hover {
+    background: #d46387;
+
+    color: white;
+}
+
+.action.delete {
+    background: transparent;
+
+    color: #9d7882;
+
+    border: 1px solid #ead5da;
+}
+
+.action.delete:hover {
+    background: #f7e9ec;
+
+    color: #b84f70;
+}
+
+
+/* =====================================
+   EMPTY STATE
+===================================== */
+
+.empty-state {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 80px 20px;
+
+    background: #fffdfb;
+
+    border: 1px dashed #dfbec9;
+
+    border-radius: 20px;
+}
+
+.empty-bow {
+    font-family: Georgia, serif;
+
+    color: #d27d98;
+
+    font-size: 45px;
+
+    margin-bottom: 15px;
+}
+
+.empty-state h2 {
+    font-family: "Playfair Display", Georgia, serif;
+
+    font-size: 28px;
+
+    font-weight: 400;
+
+    color: #60434c;
+}
+
+.empty-state p {
+    font-family: "DM Sans", sans-serif;
+
+    color: #a27d87;
+
+    font-size: 13px;
+
+    line-height: 1.7;
+
+    margin-bottom: 25px;
+}
+
+
+/* =====================================
+   ANIMATION
+===================================== */
+
+@keyframes cardAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media (max-width: 992px) {
+
+    .tweet-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .tweet-page {
+        padding: 35px 16px 60px;
+    }
+
+    .tweet-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tweet-card:nth-child(2),
+    .tweet-card:nth-child(4) {
+        transform: none;
+    }
+
+    .section-heading {
+        align-items: start;
+        gap: 10px;
+        flex-direction: column;
+    }
+
+    .image-wrapper {
+        height: 230px;
+    }
+
+    .hero-section h1 {
+        font-size: 43px;
+    }
+
+}
+
+</style>
+
+{% endblock %}
